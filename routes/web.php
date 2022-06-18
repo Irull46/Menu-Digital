@@ -12,7 +12,10 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(['prefix' => 'banner'], function () use ($router) {
+    $router->get('/', "BannerController@index");
+    $router->get('/{id}', "BannerController@show");
+    $router->post('/input', "BannerController@store");
+    $router->put('/update/{id}', "BannerController@update");
+    $router->get('/delete/{id}', "BannerController@distroy");
 });
