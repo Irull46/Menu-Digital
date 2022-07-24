@@ -17,5 +17,5 @@ $router->group(['prefix' => 'banner'], function () use ($router) {
     $router->get('/{id}', "BannerController@show");
     $router->post('/input', "BannerController@store");
     $router->put('/update/{id}', "BannerController@update");
-    $router->get('/delete/{id}', "BannerController@distroy");
+    $router->delete('/delete/{id}', "BannerController@destroy");
 });
