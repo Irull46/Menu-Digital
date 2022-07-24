@@ -15,24 +15,25 @@ class BannerController extends Controller
 
     public function store(Request $request)
     {
-        //
+        banner::create($request->all());
+        return response()->json($request);
     }
 
-    public function show(banner $id)
+    public function show($id)
     {
-        $banner = banner::find($id);
+        $banner = banner::where('id', $id)->get();
         return response()->json($banner);
     }
 
-    public function update(Request $request, banner $banner)
+    public function update(Request $request, $id)
     {
-        //
+        banner::where('id', $id)->update($request->all());
+        return response()->json('Data Sudah di Update!');
     }
 
-    public function destroy(banner $id)
+    public function destroy($id)
     {
-        $banner = banner::find($id);
-        $banner->delete();
+        banner::where('id', $id)->delete();
         return response()->json('Banner berhasil dihapus!');
     }
 }
