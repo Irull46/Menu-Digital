@@ -17,14 +17,18 @@ class BannerController extends Controller
     {
         // Validasi
         $this->validate($request, [
-            'foto' => 'required'
+            'nama' => 'required',
+            'gambar' => 'required'
         ]);
 
         $banner = new Banner();
 
-        // Unggah foto
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
+        // Input teks
+        $banner->nama = $request->input('nama');
+
+        // Unggah gambar
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
             $allowedFileExtensions = ['jpg', 'png'];
             $extension = $file->getClientOriginalExtension();
             $check = in_array($extension, $allowedFileExtensions);
@@ -32,7 +36,7 @@ class BannerController extends Controller
             if ($check) {
                 $name = time() . $file->getClientOriginalName();
                 $file->move('assets/images', $name);
-                $banner->foto = url('assets/images/' . $name);
+                $banner->gambar = url('assets/images/' . $name);
             }
         }
 
