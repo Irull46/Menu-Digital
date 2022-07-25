@@ -15,8 +15,30 @@ class BannerController extends Controller
 
     public function store(Request $request)
     {
-        banner::create($request->all());
-        return response()->json($request);
+        // Validasi
+        $this->validate($request, [
+            'foto' => 'required'
+        ]);
+
+        $banner = new Banner();
+
+        // Unggah foto
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $allowedFileExtensions = ['jpg', 'png'];
+            $extension = $file->getClientOriginalExtension();
+            $check = in_array($extension, $allowedFileExtensions);
+
+            if ($check) {
+                $name = time() . $file->getClientOriginalName();
+                $file->move('assets/images', $name);
+                $banner->foto = url('assets/images/' . $name);
+            }
+        }
+
+        $banner->save();
+
+        return response()->json($banner);
     }
 
     public function show($id)
