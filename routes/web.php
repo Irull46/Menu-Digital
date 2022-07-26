@@ -27,3 +27,11 @@ $router->group(['prefix' => 'makanan'], function () use ($router) {
     $router->put('/update/{id}', "MakananController@update");
     $router->delete('/delete/{id}', "MakananController@destroy");
 });
+
+$router->group(['prefix' => 'minuman'], function () use ($router) {
+    $router->get('/', "MinumanController@index");
+    $router->get('/{id}', "MinumanController@show");
+    $router->post('/input', "MinumanController@store");
+    $router->put('/update/{id}', "MinumanController@update");
+    $router->delete('/delete/{id}', "MinumanController@destroy");
+});
