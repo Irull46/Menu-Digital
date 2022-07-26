@@ -19,3 +19,11 @@ $router->group(['prefix' => 'banner'], function () use ($router) {
     $router->put('/update/{id}', "BannerController@update");
     $router->delete('/delete/{id}', "BannerController@destroy");
 });
+
+$router->group(['prefix' => 'makanan'], function () use ($router) {
+    $router->get('/', "MakananController@index");
+    $router->get('/{id}', "MakananController@show");
+    $router->post('/input', "MakananController@store");
+    $router->put('/update/{id}', "MakananController@update");
+    $router->delete('/delete/{id}', "MakananController@destroy");
+});
