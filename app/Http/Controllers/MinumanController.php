@@ -7,58 +7,61 @@ use Illuminate\Http\Request;
 
 class MinumanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $minumans = Minuman::all();
+        return response()->json($minumans);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        // Validasi
+        $this->validate($request, [
+            'nama' => 'required',
+            'harga' => 'required',
+            'gambar' => 'required'
+        ]);
+
+        $minuman = new Minuman();
+
+        // Input teks
+        $minuman->nama = $request->input('nama');
+        $minuman->harga = $request->input('harga');
+
+        // Unggah gambar
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $allowedFileExtensions = ['jpg', 'png'];
+            $extension = $file->getClientOriginalExtension();
+            $check = in_array($extension, $allowedFileExtensions);
+
+            if ($check) {
+                $name = time() . $file->getClientOriginalName();
+                $file->move('assets/images', $name);
+                $minuman->gambar = url('assets/images/' . $name);
+            }
+        }
+
+        $minuman->save();
+
+        return response()->json($minuman);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Minuman  $minuman
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Minuman $minuman)
+    public function show($id)
     {
-        //
+        $minuman = Minuman::where('id', $id)->get();
+        return response()->json($minuman);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Minuman  $minuman
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Minuman $minuman)
+    public function update(Request $request, $id)
     {
-        //
+        Minuman::where('id', $id)->update($request->all());
+        return response()->json('Data Sudah di Update!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Minuman  $minuman
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Minuman $minuman)
+    public function destroy($id)
     {
-        //
+        Minuman::where('id', $id)->delete();
+        return response()->json('Data berhasil dihapus!');
     }
 }
