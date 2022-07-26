@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('minumans', function (Blueprint $table) {
             $table->id();
+            $table->string('nama', 100);
+            $table->integer('harga');
+            $table->string('gambar');
             $table->timestamps();
         });
     }
